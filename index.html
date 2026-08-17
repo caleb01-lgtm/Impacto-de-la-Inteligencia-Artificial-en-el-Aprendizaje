@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impacto de la IA en el Aprendizaje · Informe de Investigación, 12° Grado</title>
+<meta name="description" content="Informe de investigación cuantitativa sobre el impacto de la Inteligencia Artificial en el aprendizaje de 96 estudiantes de 12° grado. Bachillerato en Informática, Promoción Aurión 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --paper:#F4F6F7;
+  --paper-dim:#E7EBEC;
+  --ink:#16233A;
+  --ink-soft:rgba(22,35,58,.68);
+  --ink-faint:rgba(22,35,58,.55);
+  --navy:#1F3F66;
+  --navy-deep:#0E1D30;
+  --navy-light:#7C9CBF;
+  --amber:#E2953C;
+  --amber-light:#EFC98A;
+  --teal:#4FA69A;
+  --teal-light:#8FC4BB;
+  --rose:#C1502E;
+  --rose-light:#D98A6B;
+  --line:rgba(22,35,58,.14);
+  --line-dark:rgba(244,246,247,.18);
+  --paper-on-dark:#F4F6F7;
+  --font-display:'Fraunces',serif;
+  --font-body:'IBM Plex Sans',-apple-system,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+  --container:1180px;
+  --radius:7px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --sp-xs:.5rem;--sp-sm:1rem;--sp-md:1.75rem;--sp-lg:2.75rem;--sp-xl:4.5rem;--sp-2xl:7rem;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important;}
+}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    linear-gradient(rgba(31,63,102,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31,63,102,.045) 1px, transparent 1px);
+  background-size:34px 34px;
+}
+::selection{background:var(--amber);color:var(--navy-deep);}
+a{color:inherit;}
+:focus-visible{outline:2.5px solid var(--amber);outline-offset:3px;}
+img{max-width:100%;display:block;}
+h1,h2,h3{font-family:var(--font-display);font-weight:600;margin:0;line-height:1.08;letter-spacing:-.01em;}
+p{margin:0;}
+.container{max-width:var(--container);margin-inline:auto;padding-inline:clamp(1.25rem,4vw,3rem);}
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:.72rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.mono{font-family:var(--font-mono);}
+
+/* ============ PROGRESS + HEADER ============ */
+.progress-track{position:fixed;top:0;left:0;width:100%;height:3px;background:var(--line);z-index:100;}
+.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--amber),var(--rose));transition:width 80ms linear;}
+.site-header{
+  position:sticky;top:3px;z-index:90;
+  background:rgba(244,246,247,.82);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.header-inner{
+  max-width:var(--container);margin-inline:auto;padding-inline:clamp(1.25rem,4vw,3rem);
+  height:56px;display:flex;align-items:center;justify-content:space-between;gap:1rem;
+}
+.mark{font-family:var(--font-display);font-weight:700;font-size:1.05rem;letter-spacing:-.01em;}
+.mark span{color:var(--amber);}
+.header-meta{font-family:var(--font-mono);font-size:.72rem;color:var(--ink-soft);letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+@media (max-width:640px){.header-meta{display:none;}}
+
+/* ============ SIDE NAV ============ */
+.side-nav{position:fixed;right:1.6rem;top:50%;transform:translateY(-50%);z-index:80;}
+.side-nav ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.65rem;}
+.side-nav a{
+  display:flex;align-items:center;justify-content:flex-end;gap:.6rem;
+  text-decoration:none;height:18px;
+}
+.side-nav .side-label{
+  font-family:var(--font-mono);font-size:.66rem;letter-spacing:.05em;color:var(--navy);
+  background:var(--paper);padding:.15rem .5rem;border-radius:4px;border:1px solid var(--line);
+  opacity:0;transform:translateX(6px);transition:opacity .22s var(--ease),transform .22s var(--ease);
+  white-space:nowrap;
+}
+.side-nav a:hover .side-label,.side-nav a:focus-visible .side-label{opacity:1;transform:translateX(0);}
+.side-nav .dot{width:8px;height:8px;border-radius:50%;background:var(--line);border:1px solid var(--ink-faint);transition:all .25s var(--ease);flex-shrink:0;}
+.side-nav a.active .dot{background:var(--amber);border-color:var(--amber);transform:scale(1.35);}
+.side-nav a.active .side-label{color:var(--amber);}
+@media (max-width:1080px){.side-nav{display:none;}}
+
+/* ============ HERO ============ */
+.hero{
+  background:radial-gradient(ellipse 120% 80% at 50% -10%, #17304F 0%, var(--navy-deep) 55%);
+  color:var(--paper-on-dark);
+  padding:clamp(3.5rem,9vw,7rem) 0 clamp(3rem,7vw,5rem);
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(244,246,247,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(244,246,247,.05) 1px,transparent 1px);
+  background-size:34px 34px;pointer-events:none;
+}
+.hero-inner{position:relative;display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:center;}
+@media (max-width:900px){.hero-inner{grid-template-columns:1fr;}}
+.hero-eyebrow{color:var(--amber-light);margin-bottom:1.1rem;}
+.hero h1{
+  font-size:clamp(2.15rem,4.3vw + .6rem,3.55rem);
+  font-weight:600;
+  color:#fff;
+}
+.hero h1 em{font-style:italic;font-weight:500;color:var(--amber-light);}
+.hero .hero-sub{margin-top:1.3rem;color:rgba(244,246,247,.72);font-size:1.02rem;max-width:46ch;line-height:1.65;}
+.hero .scroll-cue{
+  margin-top:2.6rem;display:inline-flex;align-items:center;gap:.6rem;
+  font-family:var(--font-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--paper-on-dark);text-decoration:none;border-bottom:1px solid var(--line-dark);padding-bottom:.35rem;
+}
+.hero .scroll-cue svg{animation:bob 1.8s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}
+
+.hero-panel{
+  background:rgba(244,246,247,.05);
+  border:1px solid var(--line-dark);
+  border-radius:var(--radius);
+  padding:clamp(1.25rem,2.5vw,2rem);
+  backdrop-filter:blur(4px);
+}
+.hero-panel-label{color:rgba(244,246,247,.68);font-size:.82rem;margin-bottom:1.1rem;line-height:1.5;}
+.hero-panel-label strong{color:#fff;font-weight:600;}
+.iso-wrap{margin-block:1.1rem;}
+.iso-grid{display:grid;grid-template-columns:repeat(16,1fr);gap:3px;}
+@media (max-width:520px){.iso-grid{grid-template-columns:repeat(12,1fr);}}
+.iso-cell{aspect-ratio:1;border-radius:2px;opacity:0;transform:scale(.35);transition:opacity .5s ease,transform .5s var(--ease);}
+.iso-wrap.in-view .iso-cell{opacity:1;transform:scale(1);transition-delay:calc(var(--i) * 6ms);}
+.iso-legend{list-style:none;margin:1.1rem 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.9rem 1.4rem;}
+.iso-legend li{display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:rgba(244,246,247,.85);}
+.iso-legend .swatch{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+.iso-legend strong{font-family:var(--font-mono);color:#fff;}
+
+/* ============ SECTIONS ============ */
+.section{padding-block:clamp(3.5rem,8vw,6.5rem);border-bottom:1px solid var(--line);}
+.section:nth-of-type(even){background:var(--paper-dim);}
+.section-inner{max-width:var(--container);margin-inline:auto;padding-inline:clamp(1.25rem,4vw,3rem);}
+.section-head{display:flex;align-items:baseline;gap:1.1rem;margin-bottom:clamp(2rem,4vw,3rem);}
+.section-num{font-family:var(--font-mono);font-size:.95rem;color:var(--amber);font-weight:600;letter-spacing:.03em;}
+.section-head h2{font-size:clamp(1.7rem,2.6vw + .6rem,2.5rem);color:var(--navy-deep);}
+.section-head-line{flex:1;height:1px;background:var(--line);margin-left:.5rem;}
+
+.section-body{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(2rem,5vw,4.5rem);align-items:start;}
+@media (max-width:860px){.section-body{grid-template-columns:1fr;}}
+.section-body.reverse{direction:rtl;}
+.section-body.reverse > *{direction:ltr;}
+
+.lead{font-size:1.12rem;line-height:1.75;color:var(--ink);max-width:52ch;}
+.lead + .lead{margin-top:1rem;}
+
+.callout{
+  margin-top:1.6rem;border-left:3px solid var(--amber);background:rgba(226,149,60,.07);
+  padding:1.1rem 1.4rem;border-radius:0 6px 6px 0;
+}
+.callout-label{display:block;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:.4rem;}
+.callout p{color:var(--ink);font-size:.98rem;line-height:1.6;}
+
+.insight{
+  margin-top:1.75rem;padding:1.15rem 1.4rem;background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+  display:flex;gap:.9rem;align-items:flex-start;
+}
+.insight .bolt{font-family:var(--font-mono);color:var(--teal);font-size:1.1rem;line-height:1;margin-top:.15rem;}
+.insight p{font-size:.94rem;color:var(--ink-soft);line-height:1.6;}
+.insight strong{color:var(--ink);font-weight:600;}
+
+/* reveal base */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.reveal.in-view{opacity:1;transform:translateY(0);}
+
+/* ============ STAT BIG ============ */
+.stat-big-wrap{display:flex;align-items:baseline;gap:.85rem;flex-wrap:wrap;}
+.stat-big{font-family:var(--font-mono);font-weight:600;font-size:clamp(3.2rem,7vw,5.2rem);color:var(--navy);line-height:1;letter-spacing:-.02em;}
+.stat-big-label{font-size:.98rem;color:var(--ink-soft);max-width:26ch;line-height:1.5;}
+
+/* ============ FICHA TABLE ============ */
+.ficha{border-top:1px solid var(--line);}
+.ficha-row{display:grid;grid-template-columns:15ch 1fr;gap:1rem;padding:.85rem 0;border-bottom:1px solid var(--line);}
+@media (max-width:520px){.ficha-row{grid-template-columns:1fr;gap:.25rem;}}
+.ficha-row dt{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);margin:0;}
+.ficha-row dd{margin:0;font-size:.98rem;color:var(--ink);font-weight:500;}
+
+/* ============ DATA SAMPLE (details) ============ */
+.data-sample{margin-top:2.25rem;border:1px solid var(--line);border-radius:var(--radius);background:#fff;overflow:hidden;}
+.data-sample summary{
+  cursor:pointer;padding:.9rem 1.25rem;font-family:var(--font-mono);font-size:.78rem;letter-spacing:.04em;
+  color:var(--navy);list-style:none;display:flex;align-items:center;justify-content:space-between;gap:1rem;
+}
+.data-sample summary::-webkit-details-marker{display:none;}
+.data-sample summary::after{content:'+';font-size:1.1rem;color:var(--amber);}
+.data-sample[open] summary::after{content:'–';}
+.data-sample summary:hover{background:var(--paper-dim);}
+.table-scroll{overflow-x:auto;border-top:1px solid var(--line);}
+table.raw{width:100%;border-collapse:collapse;font-size:.82rem;min-width:640px;}
+table.raw th{
+  font-family:var(--font-mono);font-weight:600;text-align:left;font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--ink-faint);padding:.6rem .9rem;border-bottom:1px solid var(--line);white-space:nowrap;
+}
+table.raw td{padding:.55rem .9rem;border-bottom:1px solid var(--line);color:var(--ink-soft);white-space:nowrap;}
+table.raw tr:last-child td{border-bottom:none;}
+table.raw tr:hover td{background:rgba(31,63,102,.04);color:var(--ink);}
+.data-sample-foot{padding:.7rem 1.25rem;font-size:.76rem;color:var(--ink-faint);border-top:1px solid var(--line);}
+
+/* ============ BAR CHARTS (horizontal) ============ */
+.bars-h{display:flex;flex-direction:column;gap:1.05rem;}
+.bar-row{display:grid;grid-template-columns:minmax(9rem,15ch) 1fr auto;gap:.9rem;align-items:center;}
+@media (max-width:560px){.bar-row{grid-template-columns:1fr;gap:.4rem;}}
+.bar-label{font-size:.88rem;color:var(--ink);}
+.bar-track{height:11px;background:var(--paper-dim);border-radius:20px;overflow:hidden;position:relative;}
+.section:nth-of-type(even) .bar-track{background:rgba(255,255,255,.6);}
+.bar-fill{height:100%;border-radius:20px;transform:scaleX(0);transform-origin:left center;transition:transform 1s var(--ease);}
+.bar-row.in-view .bar-fill{transform:scaleX(1);transition-delay:var(--delay,0ms);}
+.bar-value{font-family:var(--font-mono);font-size:.88rem;color:var(--ink);white-space:nowrap;text-align:right;}
+.bar-value small{color:var(--ink-faint);margin-left:.35rem;font-size:.74rem;}
+@media (max-width:560px){.bar-value{text-align:left;}}
+
+/* ============ BAR CHART (vertical) ============ */
+.bars-v{display:flex;align-items:flex-end;gap:clamp(.9rem,3vw,2.2rem);height:230px;padding-top:2rem;border-bottom:1px solid var(--line);}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:.6rem;}
+.bar-col-track{width:100%;max-width:88px;height:100%;display:flex;align-items:flex-end;}
+.bar-col-fill{width:100%;border-radius:6px 6px 0 0;transform:scaleY(0);transform-origin:bottom;transition:transform 1.1s var(--ease);position:relative;}
+.bar-col.in-view .bar-col-fill{transform:scaleY(1);transition-delay:var(--delay,0ms);}
+.bar-col-value{font-family:var(--font-mono);font-weight:600;font-size:1.05rem;color:var(--navy-deep);}
+.bar-col-label{font-size:.82rem;color:var(--ink-soft);text-align:center;}
+.bar-col-n{font-family:var(--font-mono);font-size:.68rem;color:var(--ink-faint);}
+
+/* ============ DONUT ============ */
+.donut-wrap{display:flex;gap:clamp(1.5rem,4vw,2.75rem);align-items:center;flex-wrap:wrap;}
+.donut-ring{
+  width:200px;height:200px;border-radius:50%;position:relative;flex-shrink:0;
+  transform:scale(.7) rotate(-90deg);opacity:0;
+  transition:transform 1s var(--ease),opacity 1s var(--ease);
+}
+.donut-wrap.in-view .donut-ring{transform:scale(1) rotate(-90deg);opacity:1;}
+.donut-ring::after{content:'';position:absolute;inset:24%;background:var(--paper);border-radius:50%;box-shadow:0 0 0 1px var(--line) inset;}
+.section:nth-of-type(even) .donut-ring::after{background:var(--paper-dim);}
+.donut-center{
+  position:absolute;inset:24%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transform:rotate(90deg);text-align:center;
+}
+.donut-center strong{font-family:var(--font-mono);font-size:1.55rem;color:var(--navy-deep);line-height:1;}
+.donut-center span{font-size:.66rem;color:var(--ink-soft);margin-top:.35rem;line-height:1.3;max-width:9ch;}
+.donut-legend{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.65rem;min-width:210px;}
+.donut-legend li{display:flex;align-items:center;gap:.65rem;font-size:.88rem;color:var(--ink);}
+.donut-legend .swatch{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
+.donut-legend strong{font-family:var(--font-mono);margin-left:auto;color:var(--navy-deep);}
+.donut-legend small{font-family:var(--font-mono);color:var(--ink-faint);font-size:.72rem;}
+
+/* ============ SPLIT BAR (sexo) ============ */
+.split-bar{height:34px;border-radius:20px;overflow:hidden;display:flex;width:100%;box-shadow:0 0 0 1px var(--line);}
+.split-seg{height:100%;display:flex;align-items:center;justify-content:center;transform:scaleX(0);transition:transform 1s var(--ease);}
+.split-bar.in-view .split-seg{transform:scaleX(1);}
+.split-seg span{font-family:var(--font-mono);font-size:.74rem;color:#fff;white-space:nowrap;transform:scale(1);}
+.split-caption{display:flex;justify-content:space-between;margin-top:.7rem;font-size:.8rem;color:var(--ink-soft);}
+
+/* ============ CONCLUSIONS ============ */
+.pull-quote{
+  font-family:var(--font-display);font-style:italic;font-weight:500;
+  font-size:clamp(1.3rem,2.2vw + .5rem,1.85rem);line-height:1.4;color:var(--navy-deep);
+  border-left:3px solid var(--amber);padding-left:1.4rem;margin-bottom:1.8rem;
+}
+.pull-quote:last-child{margin-bottom:0;}
+.cifras-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem 2rem;margin-top:2.5rem;}
+@media (max-width:640px){.cifras-grid{grid-template-columns:1fr 1fr;}}
+.cifra{padding-top:1rem;border-top:2px solid var(--navy-deep);}
+.cifra strong{display:block;font-family:var(--font-mono);font-weight:600;font-size:clamp(1.7rem,3vw,2.3rem);color:var(--navy-deep);}
+.cifra span{font-size:.82rem;color:var(--ink-soft);line-height:1.4;display:block;margin-top:.3rem;}
+
+/* ============ FOOTER ============ */
+.site-footer{background:var(--navy-deep);color:var(--paper-on-dark);padding:clamp(3rem,6vw,4.5rem) 0 2rem;}
+.footer-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:3rem;padding-bottom:2.5rem;border-bottom:1px solid var(--line-dark);}
+@media (max-width:760px){.footer-grid{grid-template-columns:1fr;gap:2rem;}}
+.footer-title{font-family:var(--font-display);font-size:1.4rem;font-weight:600;margin-bottom:.85rem;}
+.footer-desc{color:rgba(244,246,247,.68);font-size:.95rem;line-height:1.65;max-width:48ch;}
+.footer-ficha dt{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(244,246,247,.5);}
+.footer-ficha dd{margin:.15rem 0 1rem;font-size:.92rem;color:rgba(244,246,247,.92);}
+.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding-top:1.6rem;font-size:.76rem;color:rgba(244,246,247,.45);}
+
+/* small helper */
+.mt0{margin-top:0;}
+</style>
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <span class="mark">IA<span>·</span>12°</span>
+    <span class="header-meta mono">IMPACTO DE LA IA EN EL APRENDIZAJE — N=96 · PROMOCIÓN AURIÓN 2026</span>
+  </div>
+</header>
+
+<nav class="side-nav" aria-label="Navegación de secciones">
+  <ol id="sideNavList">
+    <li><a href="#s01" data-target="s01"><span class="side-label">Introducción</span><span class="dot"></span></a></li>
+    <li><a href="#s02" data-target="s02"><span class="side-label">Metodología</span><span class="dot"></span></a></li>
+    <li><a href="#s03" data-target="s03"><span class="side-label">Perfil</span><span class="dot"></span></a></li>
+    <li><a href="#s04" data-target="s04"><span class="side-label">Frecuencia</span><span class="dot"></span></a></li>
+    <li><a href="#s05" data-target="s05"><span class="side-label">Herramientas</span><span class="dot"></span></a></li>
+    <li><a href="#s06" data-target="s06"><span class="side-label">Propósito</span><span class="dot"></span></a></li>
+    <li><a href="#s07" data-target="s07"><span class="side-label">Aprendizaje</span><span class="dot"></span></a></li>
+    <li><a href="#s08" data-target="s08"><span class="side-label">Futuro</span><span class="dot"></span></a></li>
+    <li><a href="#s09" data-target="s09"><span class="side-label">Asignaturas</span><span class="dot"></span></a></li>
+    <li><a href="#s10" data-target="s10"><span class="side-label">Conclusiones</span><span class="dot"></span></a></li>
+  </ol>
+</nav>
+
+<main>
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="hero">
+    <div class="container hero-inner">
+      <div>
+        <p class="eyebrow hero-eyebrow">Informe de investigación · Bachillerato en Informática · Promoción Aurión 2026</p>
+        <h1>96 estudiantes de 12° grado. Un retrato estadístico de cómo la <em>Inteligencia Artificial</em> transforma su aprendizaje.</h1>
+        <p class="hero-sub">Encuesta digital aplicada a la totalidad de la muestra durante el año lectivo 2026, con base de datos limpia al 100% y procesamiento estadístico completo en Microsoft Excel.</p>
+        <a href="#s01" class="scroll-cue">
+          Explorar resultados
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 4v16M5 13l7 7 7-7"/></svg>
+        </a>
+      </div>
+      <div class="hero-panel">
+        <p class="hero-panel-label"><strong>¿Consideras que la IA mejora tu aprendizaje?</strong><br>Percepción de los 96 estudiantes encuestados — cada celda representa a un estudiante.</p>
+        <div class="iso-wrap" id="heroIso">
+          <div class="iso-grid" id="heroIsoGrid"></div>
+        </div>
+        <ul class="iso-legend" id="heroIsoLegend"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 01 INTRODUCCIÓN ============ -->
+  <section class="section" id="s01">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <span class="section-num">01</span>
+        <h2>Introducción y Objetivos</h2>
+        <span class="section-head-line"></span>
+      </div>
+      <div class="section-body">
+        <div>
+          <p class="lead reveal">La Inteligencia Artificial se ha integrado con rapidez en las rutinas académicas de la educación media. Frente a esta realidad, surge una pregunta central: ¿cómo la están usando realmente los estudiantes, y qué tanto influye en la manera en que aprenden?</p>
+          <div class="callout reveal">
+            <span class="callout-label">Objetivo del estudio</span>
+            <p>Evaluar la frecuencia de uso, las herramientas preferidas y la percepción de impacto de la Inteligencia Artificial en el aprendizaje de los estudiantes graduandos de 12° grado.</p>
+          </div>
+        </div>
+        <div class="reveal">
+          <div class="stat-big-wrap">
+            <span class="stat-big stat-num" data-count="100" data-decimals="0" data-suffix="%">0%</span>
+          </div>
+          <p class="stat-big-label">de los estudiantes encuestados ya conoce y utiliza herramientas de Inteligencia Artificial — el punto de partida de esta investigación.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 02 METODOLOGÍA ============ -->
+  <section class="section" id="s02">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <span class="section-num">02</span>
+        <h2>Metodología</h2>
+        <span class="section-head-line"></span>
+      </div>
+      <div class="section-body">
+        <p class="lead reveal">Un enfoque cuantitativo y descriptivo, aplicado sobre la totalidad de la población de estudio mediante un instrumento digital estructurado.</p>
+        <div class="reveal">
+          <dl class="ficha">
+            <div class="ficha-row"><dt>Enfoque</dt><dd>Cuantitativo / Descriptivo</dd></div>
+            <div class="ficha-row"><dt>Población</dt><dd>Estudiantes de 12° Grado</dd></div>
+            <div class="ficha-row"><dt>Tamaño de muestra (N)</dt><dd>96 estudiantes</dd></div>
+            <div class="ficha-row"><dt>Instrumento</dt><dd>Encuesta digital (Google Forms)</dd></div>
+            <div class="ficha-row"><dt>Estado de la base</dt><dd>Limpia · 100% completa · sin datos nulos</dd></div>
+            <div class="ficha-row"><dt>Periodo</dt><dd>Año lectivo 2026</dd></div>
+            <div class="ficha-row"><dt>Procesamiento</dt><dd>Tabulación e indicadores automatizados en Microsoft Excel</dd></div>
+          </dl>
+          <details class="data-sample reveal">
+            <summary>Ver muestra de la base de datos (15 de 96 registros)</summary>
+            <div class="table-scroll">
+              <table class="raw" id="rawTable"></table>
+            </div>
+            <p class="data-sample-foot">Registros 1–15 de 96, tal como fueron procesados desde la encuesta digital. Los 96 registros completos forman la base del análisis estadístico presentado en este informe.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 03 PERFIL DE LA MUESTRA ============ -->
+  <section class="section" id="s03">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <span class="section-num">03</span>
+        <h2>Perfil de la Muestra</h2>
+        <span class="section-head-line"></span>
+      </div>
+      <div class="section-body reverse">
+        <div class="reveal">
+          <p class="eyebrow" style="margin-bottom:.6rem;">Sexo</p>
+          <div class="split-bar" id="splitSexo"></div>
+          <div class="split-caption" id="splitSexoCaption"></div>
+
+          <p class="eyebrow" style="margin:2.4rem 0 1rem;">Edad</p>
+          <div class="bars-h" id="chartEdad"></div>
+        </div>
+        <div>
+          <p class="lead reveal">Antes de analizar el impacto de la IA, un vistazo a quiénes conforman la muestra: una población joven, mayoritariamente de 16 y 17 años, con una distribución equilibrada entre sexos.</p>
+          <div class="insight reveal">
+            <span class="bolt">＋</span>
+            <p>La muestra concentra al <strong>85.4%</strong> de los estudiantes entre los 16 y 17 años, el rango etario típico de 12° grado.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 04 CONOCIMIENTO Y FRECUENCIA ============ -->
+  <section class="section" id="s04">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <span class="section-num">04</span>
+        <h2>Conocimiento y Frecuencia de Uso</h2>
+        <span class="section-head-line"></span>
+      </div>
+      <div class="section-body">
+        <div class="reveal">
+          <p class="lead">La adopción es total: los 96 estudiantes encuestados afirmaron conocer y utilizar herramientas de Inteligencia Artificial. La pregunta ya no es "si la usan", sino con qué frecuencia.</p>
+          <div class="insight">
+            <span class="bolt">＋</span>
+            <p>Al sumar "todos los días" y "3 a 5 veces por semana", el <strong>74.0%</strong> de los estudiantes recurre a la IA de forma cotidiana o casi cotidiana.</p>
+          </div>
+        </div>
+        <div class="reveal">
+          <p class="eyebrow" style="margin-bottom:1rem;">¿Con qué frecuencia utilizas la IA para estudiar?</p>
+          <div class="bars-h" id="chartFrecuencia"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05 HERRAMIENTAS ============ -->
+  <section class="section" id="s05">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <span class="section-num">05</span>
+        <h2>Herramientas Más Utilizadas</h2>
+        <span class="section-head-line"></span>
+      </div>
+      <div class="section-body reverse">
+        <div class="reveal">
+          <div class="bars-v" id="chartHerramientas"></div>
+        </div>
+        <div>
+          <p class="lead reveal">¿Qué herramienta de IA utilizas con mayor frecuencia? La respuesta es contundente: ChatGPT domina de forma abrumadora las preferencias estudiantiles.</p>
+          <div class="insight reveal">
+            <span class="bolt">＋</span>
+            <p><strong>ChatGPT</strong> es la herramienta principal para 76 de los 96 estudiantes — casi 6 de cada 8. Gemini y otras herramientas (Canva, Dola, Grok, entre otras) se reparten el resto de la preferencia.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 06 PROPÓSITO ============ -->
+  <section class="section" id="s06">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <span class="section-num">06</span>
+        <h2>Propósito Principal de Uso</h2>
+        <span class="section-head-line"></span>
+      </div>
+      <div class="section-body">
+        <div class="reveal">
+          <p class="lead">Más allá de la herramienta, ¿para qué la usan? La investigación y la resolución de tareas concentran casi todo el uso reportado.</p>
+          <div class="insight">
+            <span class="bolt">＋</span>
+            <p><strong>91.7%</strong> de los estudiantes usa la IA principalmente para investigar o resolver tareas — un uso orientado al estudio más que a la generación creativa.</p>
+          </div>
+        </div>
+        <div class="reveal">
+          <p class="eyebrow" style="margin-bottom:1rem;">¿Cuál es el principal uso que le das a la IA?</p>
+          <div class="bars-h" id="chartProposito"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 07 IMPACTO EN EL APRENDIZAJE ============ -->
+  <section class="section" id="s07">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <span class="section-num">07</span>
+        <h2>Impacto Percibido en el Aprendizaje</h2>
+        <span class="section-head-line"></span>
+      </div>
+      <div class="section-body reverse">
+        <div class="reveal">
+          <div class="donut-wrap" id="donutMejora">
+            <div class="donut-ring" id="donutMejoraRing">
+              <div class="donut-center" id="donutMejoraCenter"></div>
+            </div>
+            <ul class="donut-legend" id="donutMejoraLegend"></ul>
+          </div>
+        </div>
+        <div>
+          <p class="lead reveal">El núcleo de esta investigación: ¿consideras que la IA mejora tu aprendizaje? El 92.7% percibe algún grado de mejora, aunque la intensidad divide casi en partes iguales a la muestra.</p>
+          <div class="insight reveal">
+            <span class="bolt">＋</span>
+            <p>Solo el <strong>7.3%</strong> no percibe ninguna mejora. Entre quienes sí la perciben, la opinión está prácticamente empatada entre "mucho" (49.0%) y "poco" (43.8%) — una señal de que el beneficio existe, pero su magnitud aún genera dudas entre los propios estudiantes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 08 FUTURO PROFESIONAL ============ -->
+  <section class="section" id="s08">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <span class="section-num">08</span>
+        <h2>Importancia para el Futuro Profesional</h2>
+        <span class="section-head-line"></span>
+      </div>
+      <div class="section-body">
+        <div class="reveal">
+          <p class="lead">En una escala del 1 al 5, ¿qué tan importante consideran los estudiantes que será la IA para su futuro profesional?</p>
+          <div class="insight">
+            <span class="bolt">＋</span>
+            <p><strong>71.9%</strong> califica con 4 o 5 la importancia de la IA para su futuro profesional. Apenas un estudiante, de los 96 encuestados, la considera nada importante.</p>
+          </div>
+        </div>
+        <div class="reveal">
+          <div class="donut-wrap" id="donutFuturo">
+            <div class="donut-ring" id="donutFuturoRing">
+              <div class="donut-center" id="donutFuturoCenter"></div>
+            </div>
+            <ul class="donut-legend" id="donutFuturoLegend"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 09 ASIGNATURAS ============ -->
+  <section class="section" id="s09">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <span class="section-num">09</span>
+        <h2>Asignaturas de Mayor Uso</h2>
+        <span class="section-head-line"></span>
+      </div>
+      <div class="section-body reverse">
+        <div class="reveal">
+          <div class="bars-h" id="chartAsignatura"></div>
+        </div>
+        <div>
+          <p class="lead reveal">¿En cuál asignatura utilizan más la IA? Informática y Matemáticas encabezan la lista — coherente con un bachillerato orientado a la informática.</p>
+          <div class="insight reveal">
+            <span class="bolt">＋</span>
+            <p>Informática y Matemáticas concentran casi la mitad (<strong>49.0%</strong>) de las menciones, seguidas de un grupo diverso de otras asignaturas científicas.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 10 CONCLUSIONES ============ -->
+  <section class="section" id="s10">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <span class="section-num">10</span>
+        <h2>Conclusiones</h2>
+        <span class="section-head-line"></span>
+      </div>
+      <div style="max-width:74ch;">
+        <p class="pull-quote reveal">Adopción masiva: el 100% de los estudiantes de 12° grado conoce y utiliza herramientas de Inteligencia Artificial.</p>
+        <p class="pull-quote reveal">Dominio ético pendiente: los resultados sugieren que se requiere orientación pedagógica para potenciar el uso de la IA en la investigación académica.</p>
+      </div>
+      <div class="reveal">
+        <p class="eyebrow" style="margin-top:1rem;">En cifras</p>
+        <div class="cifras-grid">
+          <div class="cifra"><strong>74.0%</strong><span>usa la IA de forma diaria o casi diaria</span></div>
+          <div class="cifra"><strong>79.2%</strong><span>prefiere ChatGPT como herramienta principal</span></div>
+          <div class="cifra"><strong>92.7%</strong><span>percibe algún grado de mejora en su aprendizaje</span></div>
+          <div class="cifra"><strong>71.9%</strong><span>la considera importante o muy importante para su futuro</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <p class="footer-title">Impacto de la Inteligencia Artificial en el Aprendizaje de los Estudiantes</p>
+        <p class="footer-desc">Investigación cuantitativa desarrollada como proyecto de feria científica, presentando el análisis estadístico completo de la encuesta aplicada a estudiantes graduandos de 12° grado.</p>
+      </div>
+      <dl class="footer-ficha">
+        <dt>Programa</dt><dd>Bachillerato en Informática · Promoción Aurión 2026</dd>
+        <dt>Muestra</dt><dd>N = 96 estudiantes de 12° grado</dd>
+        <dt>Instrumento</dt><dd>Encuesta digital · Procesamiento en Microsoft Excel</dd>
+      </dl>
+    </div>
+    <div class="footer-bottom">
+      <span>Los porcentajes se calculan sobre N = 96 y pueden no sumar exactamente 100% por redondeo.</span>
+      <span>Año lectivo 2026</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+const N = 96;
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const DATA = {
+  sexo: [
+    {label:'Femenino', count:51, color:'var(--navy)'},
+    {label:'Masculino', count:45, color:'var(--teal)'}
+  ],
+  edad: [
+    {label:'17 años', count:47, color:'var(--navy)'},
+    {label:'16 años', count:35, color:'var(--teal)'},
+    {label:'18 años', count:12, color:'var(--amber)'},
+    {label:'19 años o más', count:2, color:'var(--rose)'}
+  ],
+  frecuencia: [
+    {label:'3 a 5 veces por semana', count:38, color:'var(--navy)'},
+    {label:'Todos los días', count:33, color:'var(--teal)'},
+    {label:'1 a 2 veces por semana', count:25, color:'var(--amber)'}
+  ],
+  herramienta: [
+    {label:'ChatGPT', count:76, color:'var(--navy)'},
+    {label:'Gemini', count:13, color:'var(--teal)'},
+    {label:'Otras', count:7, color:'var(--amber)'}
+  ],
+  proposito: [
+    {label:'Investigar', count:51, color:'var(--navy)'},
+    {label:'Resolver tareas', count:37, color:'var(--teal)'},
+    {label:'Resumir información', count:5, color:'var(--amber)'},
+    {label:'Generar imágenes / Otros', count:3, color:'var(--rose)'}
+  ],
+  mejora: [
+    {label:'Mucho', count:47, color:'var(--amber)'},
+    {label:'Poco', count:42, color:'var(--navy)'},
+    {label:'Nada', count:7, color:'var(--rose)'}
+  ],
+  futuro: [
+    {label:'5 · Muy importante', count:40, color:'var(--amber)'},
+    {label:'4', count:29, color:'var(--navy)'},
+    {label:'3', count:20, color:'var(--teal)'},
+    {label:'2', count:6, color:'var(--rose-light)'},
+    {label:'1 · Nada importante', count:1, color:'var(--rose)'}
+  ],
+  asignatura: [
+    {label:'Informática', count:24, color:'var(--navy)'},
+    {label:'Matemáticas', count:23, color:'var(--teal)'},
+    {label:'Otras (Química, Física, Biología)', count:15, color:'var(--amber)'},
+    {label:'Ciencias', count:13, color:'var(--rose)'},
+    {label:'Español', count:7, color:'var(--navy-light)'},
+    {label:'Inglés', count:7, color:'var(--teal-light)'},
+    {label:'Todas las asignaturas', count:7, color:'var(--amber-light)'}
+  ]
+};
+
+const RAW_SAMPLE = [
+  [1,'Masculino','16 años','Otras','Resolver tareas','Poco',2],
+  [2,'Masculino','18 años','ChatGPT','Investigar','Mucho',5],
+  [3,'Masculino','17 años','ChatGPT','Resolver tareas','Poco',4],
+  [4,'Femenino','16 años','ChatGPT','Investigar','Mucho',4],
+  [5,'Femenino','17 años','ChatGPT','Resolver tareas','Poco',4],
+  [6,'Femenino','17 años','ChatGPT','Investigar','Poco',4],
+  [7,'Femenino','16 años','ChatGPT','Resolver tareas','Poco',3],
+  [8,'Masculino','17 años','ChatGPT','Resolver tareas','Poco',3],
+  [9,'Femenino','17 años','Gemini','Resumir información','Mucho',5],
+  [10,'Masculino','16 años','ChatGPT','Investigar','Nada',5],
+  [11,'Masculino','17 años','ChatGPT','Resolver tareas','Poco',5],
+  [12,'Femenino','17 años','ChatGPT','Resolver tareas','Mucho',5],
+  [13,'Masculino','17 años','Gemini','Investigar','Poco',4],
+  [14,'Masculino','18 años','ChatGPT','Investigar','Mucho',3],
+  [15,'Masculino','17 años','ChatGPT','Resolver tareas','Poco',4]
+];
+
+function pct(count){ return count / N * 100; }
+function fmt1(n){ return n.toFixed(1); }
+
+/* ---------- Horizontal bar chart ---------- */
+function buildBarsH(container, data){
+  container.innerHTML = '';
+  data.forEach((d,i)=>{
+    const p = pct(d.count);
+    const row = document.createElement('div');
+    row.className = 'bar-row reveal';
+    row.style.setProperty('--delay', (i*90)+'ms');
+    row.innerHTML =
+      '<span class="bar-label">'+d.label+'</span>'+
+      '<span class="bar-track"><span class="bar-fill" style="width:'+p+'%;background:'+d.color+'"></span></span>'+
+      '<span class="bar-value"><strong>'+fmt1(p)+'%</strong><small>n='+d.count+'</small></span>';
+    container.appendChild(row);
+  });
+}
+
+/* ---------- Vertical bar chart ---------- */
+function buildBarsV(container, data){
+  container.innerHTML = '';
+  data.forEach((d,i)=>{
+    const p = pct(d.count);
+    const col = document.createElement('div');
+    col.className = 'bar-col reveal';
+    col.style.setProperty('--delay', (i*110)+'ms');
+    col.innerHTML =
+      '<span class="bar-col-value">'+fmt1(p)+'%</span>'+
+      '<div class="bar-col-track"><div class="bar-col-fill" style="height:'+p+'%;background:'+d.color+'"></div></div>'+
+      '<span class="bar-col-label">'+d.label+'</span>'+
+      '<span class="bar-col-n">n='+d.count+'</span>';
+    container.appendChild(col);
+  });
+}
+
+/* ---------- Split proportion bar ---------- */
+function buildSplit(barEl, captionEl, data){
+  barEl.innerHTML = '';
+  captionEl.innerHTML = '';
+  data.forEach(d=>{
+    const p = pct(d.count);
+    const seg = document.createElement('div');
+    seg.className = 'split-seg';
+    seg.style.width = p+'%';
+    seg.style.background = d.color;
+    seg.innerHTML = '<span>'+fmt1(p)+'%</span>';
+    barEl.appendChild(seg);
+    const cap = document.createElement('span');
+    cap.innerHTML = '<strong style="color:'+d.color+'">●</strong> '+d.label+' <span class="mono">(n='+d.count+')</span>';
+    captionEl.appendChild(cap);
+  });
+}
+
+/* ---------- Donut chart ---------- */
+function buildDonut(ringEl, centerEl, legendEl, data, centerLabel){
+  let cum = 0;
+  const stops = data.map(d=>{
+    const start = cum/N*100;
+    cum += d.count;
+    const end = cum/N*100;
+    return d.color+' '+start+'% '+end+'%';
+  }).join(', ');
+  ringEl.style.background = 'conic-gradient('+stops+')';
+  const top = data[0];
+  centerEl.innerHTML = '<strong>'+fmt1(pct(top.count))+'%</strong><span>'+(centerLabel||top.label)+'</span>';
+  legendEl.innerHTML = data.map(d=>
+    '<li><span class="swatch" style="background:'+d.color+'"></span>'+d.label+'<strong>'+fmt1(pct(d.count))+'%</strong><small>n='+d.count+'</small></li>'
+  ).join('');
+}
+
+/* ---------- Isotype grid ---------- */
+function buildIsotype(gridEl, legendEl, data){
+  gridEl.innerHTML = '';
+  let idx = 0;
+  data.forEach(d=>{
+    for(let i=0;i<d.count;i++){
+      const cell = document.createElement('span');
+      cell.className = 'iso-cell';
+      cell.style.background = d.color;
+      cell.style.setProperty('--i', idx);
+      gridEl.appendChild(cell);
+      idx++;
+    }
+  });
+  legendEl.innerHTML = data.map(d=>
+    '<li><span class="swatch" style="background:'+d.color+'"></span>'+d.label+' <strong>'+fmt1(pct(d.count))+'%</strong></li>'
+  ).join('');
+}
+
+/* ---------- Raw data table ---------- */
+function buildRawTable(el){
+  const head = '<thead><tr><th>ID</th><th>Sexo</th><th>Edad</th><th>Herramienta</th><th>Uso principal</th><th>Mejora</th><th>Importancia</th></tr></thead>';
+  const rows = RAW_SAMPLE.map(r=>
+    '<tr><td class="mono">'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td><td>'+r[5]+'</td><td class="mono">'+r[6]+'</td></tr>'
+  ).join('');
+  el.innerHTML = head + '<tbody>'+rows+'</tbody>';
+}
+
+/* ---------- Counters ---------- */
+function animateCount(el){
+  const target = parseFloat(el.dataset.count);
+  const decimals = parseInt(el.dataset.decimals||'0',10);
+  const suffix = el.dataset.suffix||'';
+  if(reduceMotion){ el.textContent = target.toFixed(decimals)+suffix; return; }
+  const dur = 1300;
+  const start = performance.now();
+  function frame(now){
+    const t = Math.min(1,(now-start)/dur);
+    const eased = 1-Math.pow(1-t,3);
+    el.textContent = (target*eased).toFixed(decimals)+suffix;
+    if(t<1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ---------- Build everything ---------- */
+buildBarsH(document.getElementById('chartEdad'), DATA.edad);
+buildBarsH(document.getElementById('chartFrecuencia'), DATA.frecuencia);
+buildBarsH(document.getElementById('chartProposito'), DATA.proposito);
+buildBarsH(document.getElementById('chartAsignatura'), DATA.asignatura);
+buildBarsV(document.getElementById('chartHerramientas'), DATA.herramienta);
+buildSplit(document.getElementById('splitSexo'), document.getElementById('splitSexoCaption'), DATA.sexo);
+buildDonut(document.getElementById('donutMejoraRing'), document.getElementById('donutMejoraCenter'), document.getElementById('donutMejoraLegend'), DATA.mejora, 'perciben mejora');
+buildDonut(document.getElementById('donutFuturoRing'), document.getElementById('donutFuturoCenter'), document.getElementById('donutFuturoLegend'), DATA.futuro, 'Muy importante');
+buildIsotype(document.getElementById('heroIsoGrid'), document.getElementById('heroIsoLegend'), DATA.mejora);
+buildRawTable(document.getElementById('rawTable'));
+
+/* ---------- Reveal observer ---------- */
+const io = new IntersectionObserver((entries, obs)=>{
+  entries.forEach(entry=>{
+    if(!entry.isIntersecting) return;
+    entry.target.classList.add('in-view');
+    if(entry.target.dataset.count) animateCount(entry.target);
+    obs.unobserve(entry.target);
+  });
+}, {threshold:.18, rootMargin:'0px 0px -8% 0px'});
+
+document.querySelectorAll('.reveal, .bar-row, .bar-col, .donut-wrap, .split-bar, .iso-wrap, .stat-num').forEach(el=>io.observe(el));
+
+/* ---------- Progress bar ---------- */
+const progressFill = document.getElementById('progressFill');
+let ticking = false;
+function updateProgress(){
+  const h = document.documentElement;
+  const scrolled = h.scrollTop;
+  const max = h.scrollHeight - h.clientHeight;
+  const p = max>0 ? (scrolled/max*100) : 0;
+  progressFill.style.width = p+'%';
+  ticking = false;
+}
+window.addEventListener('scroll', ()=>{
+  if(!ticking){ requestAnimationFrame(updateProgress); ticking = true; }
+}, {passive:true});
+updateProgress();
+
+/* ---------- Side nav active state ---------- */
+const navLinks = Array.from(document.querySelectorAll('.side-nav a'));
+const sections = navLinks.map(a=>document.getElementById(a.dataset.target)).filter(Boolean);
+const navIo = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    const link = navLinks.find(a=>a.dataset.target===entry.target.id);
+    if(!link) return;
+    if(entry.isIntersecting) link.classList.add('active');
+    else link.classList.remove('active');
+  });
+}, {rootMargin:'-45% 0px -45% 0px'});
+sections.forEach(s=>navIo.observe(s));
+})();
+</script>
+</body>
+</html>
